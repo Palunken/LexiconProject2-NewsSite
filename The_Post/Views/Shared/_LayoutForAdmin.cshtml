@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - The_Post</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/The_Post.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex flex-nowrap h-100">
+        <!-- Sidebar -->
+        <div class="d-flex flex-column sidebar_Admin flex-shrink-0 bg-dark-subtle" style="border-right: 1px solid #A8A8A8;">
+
+            <a asp-action="Index" asp-controller="Admin" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none" style="height: 82px; border-bottom: 2px solid #A8A8A8;">
+                <span><strong class="customFont" style="font-size: 34px;">ThePost</strong><em class="fs-3">Admin</em></span>
+            </a>
+
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li>
+                    <a href="/" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-home p-2"></i>
+                        Homepage
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-gauge-high p-2"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AllArticles" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-newspaper p-2"></i>
+                        Articles
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-file-circle-plus p-2"></i>
+                        Add Article
+                    </a>
+                </li>
+
+               @if (User.IsInRole("Admin"))
+               {
+                    <li>
+                        <a asp-action="EmployeeManagement" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                            <i class="fa fa-address-card p-2"></i>
+                            Employee Management
+                        </a>
+                    </li>                   
+                    <li>
+                        <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                            <i class="fa fa-user-tie p-2"></i>
+                            Roles Management
+                        </a>
+                    </li>                    
+                    <li>
+                        <a asp-action="Index" asp-controller="SubscriptionTypes" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                            <i class="fa fa-pen-fancy p-2"></i>
+                            Subscription Management
+                        </a>
+                    </li>                    
+                    <li>
+                        <a asp-action="SubscriptionStats" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
+                            <i class="fa fa-chart-column p-2"></i>
+                            Subscription Statistics
+                        </a>
+                    </li>
+               }
+              
+            </ul>  
+            <svg class="wave-divider" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#0A2472" d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,192C672,171,768,149,864,160C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow-1 d-flex flex-column min-vh-100">
+            <!-- Header -->
+            <header class="p-2 headerAdmin text-bg-light">
+                    <div class="d-flex align-items-center Mobile_Header-Admin p-0">
+                        <!-- Button -->
+                        <button class="btn btn-light ofcButtonAdmin d-inline-flex" type="button"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+                                aria-controls="offcanvasWithBothOptions" aria-expanded="false" title="Menu">
+                            <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
+                            <path d="M1 7.5h30V1.9H1v5.6zm0 22.6h30v-5.6H1v5.6zm0-11.3h30v-5.6H1v5.6z" fill="#333"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Admin Title -->
+                        <a asp-action="Index" asp-controller="Admin"
+                           class="d-inline-flex align-items-center title_admin flex-grow-1 justify-content-center p-1 link-body-emphasis text-decoration-none"
+                           style="height: 50px;">
+                            <span class="fs-3"><strong>ThePost</strong><em>Admin</em></span>
+                        </a>
+                    </div>
+                <div class="container-fluid p-0">
+                  
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="d-flex align-items-center header_Items_Admin justify-content-start">
+                        
+                            <form asp-controller="Admin" asp-action="SearchResultsAdmin" class="me-3 d-flex align-items-center" style="width: 400px;" role="search">
+                                <input type="search" name="searchTerm" class="form-control me-2" placeholder="Search..." aria-label="Search">
+                                <button aria-label="Search The Post" title="Search" style="all: unset; cursor: pointer;" class="p-2 hover:bg-gray-100 border-none outline-none">
+                                    <svg viewBox="0 0 32 32" width="25" height="25" category="actions" icon="search" aria-hidden="true" fill="currentColor">
+                                        <path d="m30.6 28.1-8.3-8.3c1.5-2 2.4-4.4 2.4-7.2C24.7 6 19.6 1 13 1S1.4 6.1 1.4 12.7 6.5 24.3 13 24.3c2.3 0 4.4-.6 6.2-1.8l8.5 8.5 2.9-2.9zM4 12.6c0-5.2 3.9-9.1 9-9.1s9 3.9 9 9.1c0 5.2-3.9 9.1-9 9.1s-9-3.9-9-9.1z"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+
+
+                        <div class="d-flex align-items-center me-2 mt-2 header_Items_Admin">
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <partial name="_Sidebar_Admin_Mobile_Partial" />
+
+            <!-- Main Content -->
+            <div class="div-main-admin">
+                <main role="main" class="container-fluid py-2 px-3">
+                    @RenderBody()
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-auto footer_Admin border-top fixed-bottom text-bg-light">
+                <p class="text-center m-1"><strong class="customFont" style="font-size: 18px;">ThePost</strong><em>Admin</em></p>
+                @* <ul class="nav justify-content-center border-bottom mx-5 m-1">
+                </ul> *@
+                <p class="text-center pt-1 m-0">© 2025, made with <i class="fa fa-heart heart text-danger"></i> by Team Post</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

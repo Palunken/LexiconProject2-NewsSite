@@ -1,0 +1,12 @@
+﻿@page
+@model The_Post.Areas.Identity.Pages.Account.Manage.SubscriptionSuccessModel
+@{
+    ViewData["Title"] = "Subscription Successful";
+}
+
+<div class="container text-center">
+    <h1 class="display-4 text-success">Subscription Successful!</h1>
+    <p class="lead mt-3">Thank you for subscribing to The Post: Premium.</p>
+    <p><strong>Your subscription will expire on @Model.ExpireDate.ToShortDateString().</strong></p>
+    <a href="/identity/account/manage/subscription" class="btn btn-primary mt-3">Go back to Subscriptions</a>
+</div>

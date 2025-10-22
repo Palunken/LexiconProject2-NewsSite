@@ -1,0 +1,118 @@
+﻿@model The_Post.Models.Article
+
+<!--Div-structure that mimics the one in the Front page-->
+<div class="container-fluid">
+    <div class="row justify-content-between gap-lg-5">
+
+        <div class="col-lg-2 order-3 order-lg-1 flex-lg-grow-1"></div>
+
+        <main class="col-lg-6 order-1 order-lg-2 flex-lg-grow-1">
+            <div class="mx-auto d-flex flex-column align-items-start gap-1">
+
+                <img src="@Model.ImageOriginalLink" class="img-fluid mx-auto" alt="" style="border-radius: 1%; width: 100%" />
+
+                <h1 class="fw-bolder"> @Model.HeadLine </h1>
+
+                <div class="d-flex gap-2 flex-wrap align-self-start fs-5">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <a class="badge bg-secondary text-decoration-none text-white"
+                           asp-action="CategoryView"
+                           asp-controller="News" asp-route-categoryName="@category.Name">
+                            @category.Name
+                        </a>
+                    }
+                </div>
+
+                <div class="text-muted">Published: @Model.DateStamp.ToString("yyyy-MM-dd")</div>
+
+                <p class="fs-4 fw-bold mt-2"> @Model.ContentSummary </p>
+
+                @if (User.IsInRole("Subscriber") || User.IsInRole("Admin"))
+                {
+                    <!-- Show full content if user is a Subscriber or Admin -->
+                    <div class="fs-5"> @Html.Raw(Model.Content) </div> <!--Html.Raw is needed in order for the generated <p> and <br /> elements to be processed correctly-->
+                }
+                else
+                {
+                    <!-- Show only a preview if user is not a subscriber -->
+                    <div class="alert alert-warning m-0" role="alert">
+                        <p class="fs-6 fw-light m-0">This content is only available for subscribers.</p>
+                        <div class="card">
+                            <div class="card-body fs-5">@Html.Raw(Model.Content.Substring(0, 150))...</div>
+                        </div>
+                        <p class="fs-6 fw-light m-0 text-end">If you already are a subscriber <a asp-area="Identity" asp-page="/Account/Login">login here</a></p>
+                    </div>
+
+                    <div class="alert alert-warning mt-2 mx-auto" role="alert">
+                        <p class="fs-6 fw-light mb-0">or subscribe to Read More.</p>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title text-center"><strong>The Post: Premium</strong></h4>
+                                <p class="card-subtitle text-center fw-lighter">Unlimited access to all articles</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-center"><strong>Become a The Post: Premium member to read this article and more.</strong></p>
+                                <div class="card-body border mx-auto">
+                                    <p class="card-text">For only 99kr/month, you can:</p>
+                                    <p class="card-text"><i class="fa-solid fa-check text-success"></i><em> Read all the articles as much as you want</em></p>
+                                    <p class="card-text"><i class="fa-solid fa-check text-success"></i><em> Search and read archived articles</em></p>
+                                    <p class="card-text"><i class="fa-solid fa-check text-success"></i><em> Keep up with the latest news</em></p>
+                                </div>
+                                <div class="d-grid col-6 mx-auto mb-0">
+                                    <a asp-area="Identity" asp-page="/Account/Manage/Subscription" class="btn btn-primary mt-5 mb-1 rounded-pill">
+                                        Subscribe Now
+                                    </a>
+                                </div>
+                                <p class="fs-6 fw-lighter mb-0 text-center">Only one month at a time, no long binding periods!</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div>
+                    <button type="button" class="btn btn-success" id="likeButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+                            <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2 2 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a10 10 0 0 0-.443.05 9.4 9.4 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a9 9 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.2 2.2 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.9.9 0 0 1-.121.416c-.165.288-.503.56-1.066.56z" />
+                        </svg>
+                        Like <span id="likeCount">@Model.Likes.Count()</span>
+                    </button>
+                    <span id="errorLikeCount" class="text-danger ms-3"></span>
+                </div>
+
+                <p> Views: @Model.Views </p>
+
+            </div>
+        </main>
+
+        <div class="col-lg-2 order-2 order-lg-3 flex-lg-grow-1"></div>
+
+    </div>
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!--Needed because the scripts inside _Layout are not availabe in partial views-->
+<script>
+    $(document).ready(function () {
+        $("#likeButton").click(function () {
+            var articleId = @Model.Id; 
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("LikeArticle", "Article")", 
+                data: { articleId: articleId },
+                success: function (likeCount) {
+                    if (likeCount < 0) { // If the user isn't logged in a message is shown
+                        $("#errorLikeCount").text("Please log in to like the article.");
+                    }
+                    else {
+                        $("#likeCount").text(likeCount); // Update the like count on the page
+                    }
+                }
+            });
+        });
+    });
+</script>

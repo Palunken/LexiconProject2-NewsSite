@@ -1,0 +1,48 @@
+﻿@model The_Post.Models.API.SpotNow;
+@{
+    ViewData["Title"] = "Test";
+    var plusoneSE1 = @Model.SE1.First().Hour + 1;
+    var plusoneSE2 = @Model.SE2.First().Hour + 1;
+    var plusoneSE3 = @Model.SE3.First().Hour + 1;
+    var plusoneSE4 = @Model.SE4.First().Hour + 1;
+
+    float price = 0;
+}
+
+
+@* <div>class="electricity-prices-container mt-3"> *@
+<h2> Electricity Prices for the Current Hour</h2>
+<div class="table-responsive w-100">
+    <table class="prices-table col-sm-4 table-bordered bg- width:50% text-center">
+        <thead>
+            <tr>
+                <th>Region</th>
+                <th>Hour</th>
+                <th>Price (EUR)</th>
+                <th>Price (SEK)</th>
+                <th>K-Means Cluster</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var region in new[] { Model.SE1, Model.SE2, Model.SE3, Model.SE4 })
+            {
+                string regionName = region == Model.SE1 ? "SE1" :
+                region == Model.SE2 ? "SE2" :
+                region == Model.SE3 ? "SE3" : "SE4";
+
+                @foreach (var spot in region)
+                {
+                    <tr>
+                        <td>@regionName</td>
+                        <td>@spot.Hour:00</td>
+                        <td>@spot.price_eur</td>
+                        <td>@spot.price_sek</td>
+                        <td>@spot.kmeans</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+@* </div> *@

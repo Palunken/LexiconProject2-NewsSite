@@ -1,0 +1,102 @@
+﻿@model The_Post.Models.VM.EditArticleVM
+
+@{
+    ViewData["Title"] = "Edit Article";
+    Layout = "_LayoutForAdmin";
+}
+
+<div class="row mt-4">
+    <div class="col-md-8 col-lg-6">
+        <h2><strong><em>Edit Article</em></strong></h2>
+        <p class="mb-3" style="border-bottom: 1px solid #A8A8A8;"></p>
+    </div>
+</div>
+
+<form asp-action="EditArticle" method="post" enctype="multipart/form-data" autocomplete="off">
+    <input type="hidden" asp-for="Id" />
+    <!-- Main row: form fields on left, categories on right (for ≥992px) -->
+    <div class="row ps-1">
+        <!-- Left Column: Main Form Fields -->
+        <div class="col-md-8 col-lg-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Row 1: Headline & Link Text -->
+            <div class="row mt-4 pt-2">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="HeadLine" class="form-control" placeholder="Headline" />
+                        <label asp-for="HeadLine">Headline</label>
+                        <span asp-validation-for="HeadLine" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="LinkText" class="form-control" placeholder="Link Text" />
+                        <label asp-for="LinkText">Link Text</label>
+                        <span asp-validation-for="LinkText" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Content Summary -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="ContentSummary" class="form-control" placeholder="Content Summary" style="height: 100px;"></textarea>
+                        <label asp-for="ContentSummary">Content Summary</label>
+                        <span asp-validation-for="ContentSummary" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Content -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="Content" class="form-control" placeholder="Content" style="height: 200px;"></textarea>
+                        <label asp-for="Content">Content</label>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: File Upload -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label asp-for="ImageLink" class="form-label">Select file to upload:</label>
+                        <input type="file" asp-for="ImageLink" class="form-control" />
+                        <span asp-validation-for="ImageLink" class="text-danger"></span>
+                        <small>Current Image: @(ViewBag.CurrentImage ?? "none")</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Categories (appears to the right on large screens, stacks on small screens) -->
+        <div class="col-12 col-lg-4 mt-4 pt-2 ms-lg-5">
+            <h4>Categories</h4>
+            @foreach (var category in Model.AvailableCategories)
+            {
+                <div class="form-check">
+                    <input type="checkbox" name="SelectedCategoryIds" value="@category.Value" class="form-check-input" id="cat_@category.Value"
+                    @(Model.SelectedCategoryIds.Contains(int.Parse(category.Value)) ? "checked" : "") />
+                    <label class="form-check-label" for="cat_@category.Value">@category.Text</label>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Button Row: Appears below the fields and categories on all screen sizes -->
+    <div class="row mt-3">
+        <div class="col-12 d-flex">
+            <button type="submit" class="btn btn-outline-success btn-sm me-2"
+                    style="border-color: #0A2472; color: #0A2472;"
+                    onmouseover="this.style.backgroundColor='#0A2472'; this.style.color='white';"
+                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='#0A2472';">
+                <i class="fa fa-save p-2"></i> Save
+            </button>
+            <a class="btn btn-secondary btn-sm px-4 py-2" asp-controller="Admin" asp-action="AllArticles">Back</a>
+        </div>
+    </div>
+</form>

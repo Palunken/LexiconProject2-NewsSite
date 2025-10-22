@@ -1,0 +1,176 @@
+﻿@model The_Post.Models.VM.EmployeeVM
+
+@{
+    ViewData["Title"] = "EmployeeManagement";
+    Layout = "_LayoutForAdmin";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<!-- Bootstrap Tabs for switching between Employees and Register Employee -->
+<ul class="nav nav-tabs custom-tabs" id="employeeTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="employees-tab" data-bs-toggle="tab" data-bs-target="#employees" type="button" role="tab">Employees</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="addEmployee-tab" data-bs-toggle="tab" data-bs-target="#addEmployee" type="button" role="tab">Register Employee</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="employeeTabContent">
+    <!-- Employees Tab -->
+    <div class="tab-pane fade show active mt-4" id="employees" role="tabpanel">
+        <div class="row mt-4">
+            <div class="col-md-8 col-lg-6">
+                <h2><strong><em>Employees</em></strong></h2>
+                <p class="mb-3" style="border-bottom: 1px solid #A8A8A8;"></p>
+            </div>
+        </div>        
+        <div class="row mt-4">
+            @foreach (var employee in Model.Employees)
+            {
+                <div class="col-lg-6 col-xl-6 col-xxl-custom">
+                    <partial name="_EmployeePartial" model="employee" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Register Employee Tab -->
+    <div class="tab-pane fade" id="addEmployee" role="tabpanel">
+        <div class="row mt-4">
+            <div class="col-md-8 col-lg-6">
+                <h2><strong><em>Register New Employee</em></strong></h2>
+                <p class="mb-3" style="border-bottom: 1px solid #A8A8A8;"></p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-8 col-lg-6">          
+                <form asp-action="AddEmployee" method="post" autocomplete="off">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Row 1: First Name & Last Name -->
+                    <div class="row mt-4 pt-2 ps-2">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.FirstName" class="form-control" placeholder="First Name" />
+                                <label asp-for="NewEmployee.FirstName">First Name</label>
+                                <span asp-validation-for="NewEmployee.FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.LastName" class="form-control" placeholder="Last Name" />
+                                <label asp-for="NewEmployee.LastName">Last Name</label>
+                                <span asp-validation-for="NewEmployee.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Date of Birth & Address -->
+                    <div class="row ps-2">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.DOB" type="date" value="" class="form-control" placeholder="Date of Birth" />
+                                <label asp-for="NewEmployee.DOB">Date of Birth</label>
+                                <span asp-validation-for="NewEmployee.DOB" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.Address" class="form-control" placeholder="Address" />
+                                <label asp-for="NewEmployee.Address">Address</label>
+                                <span asp-validation-for="NewEmployee.Address" class="text-danger"></span>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <!-- Row 3: Zip & City -->
+                    <div class="row ps-2">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.Zip" class="form-control" placeholder="Zip" />
+                                <label asp-for="NewEmployee.Zip">Zip</label>
+                                <span asp-validation-for="NewEmployee.Zip" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.City" class="form-control" placeholder="City" />
+                                <label asp-for="NewEmployee.City">City</label>
+                                <span asp-validation-for="NewEmployee.City" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Email & Phone Number -->
+                    <div class="row ps-2">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.Email" class="form-control" placeholder="Email" autocomplete="off" />
+                                <label asp-for="NewEmployee.Email">Email</label>
+                                <span asp-validation-for="NewEmployee.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.PhoneNumber" class="form-control" placeholder="Phone Number" />
+                                <label asp-for="NewEmployee.PhoneNumber">Phone Number</label>
+                                <span asp-validation-for="NewEmployee.PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                                        
+                    <!-- Row 5: Password & Confirm Password -->
+                    <div class="row ps-2">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.Password" type="password" class="form-control" placeholder="Password" autocomplete="new-password" />
+                                <label asp-for="NewEmployee.Password">Password</label>
+                                <span asp-validation-for="NewEmployee.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="NewEmployee.ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
+                                <label asp-for="NewEmployee.ConfirmPassword">Confirm Password</label>
+                                <span asp-validation-for="NewEmployee.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="ps-2">
+                        <button type="submit" class="btn btn-outline-success btn-sm"
+                                style="border-color: #0A2472; color: #0A2472;"
+                                onmouseover="this.style.backgroundColor='#0A2472'; this.style.color='white';"
+                                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#0A2472';">
+                            <i class="fa fa-user-plus p-2"></i> Register
+                        </button>
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var activeTab = '@ViewBag.ActiveTab';
+        if (activeTab === "addEmployee") {
+            var tabTrigger = document.querySelector('#addEmployee-tab');
+            if (tabTrigger) {
+                var tab = new bootstrap.Tab(tabTrigger);
+                tab.show();
+            }
+        }
+    });
+</script>

@@ -1,0 +1,145 @@
+﻿@model The_Post.Models.VM.SubscriptionManagementVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutForAdmin";
+}
+
+<style>
+    /* Center content in specific columns */
+    .cust-act {
+        vertical-align: middle;
+        text-align: center;
+    }
+    
+    @@media (min-width: 1200px) and (max-width: 1600px) {
+        .cust-act .btn {
+            display: block; 
+            width: 100%; 
+            margin-bottom: 5px; 
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .cust-act .btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+    }
+    
+</style>
+
+<div class="row mt-4">
+    <div class="col-md-8 col-lg-6">
+        <h2><strong><em>Subscription Management</em></strong></h2>
+        <p class="mb-3" style="border-bottom: 1px solid #A8A8A8;"></p>
+    </div>
+</div>
+
+<div class="row my-3 py-4 ms-1">
+    <!-- Left Column: List of Subscription Types -->
+    <div class="col-xl-5 col-10 me-xl-5">
+        <h4>Subscription Types</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Type Name</th>
+                    <th>Price</th>
+                    <th class="col-6 cust-act">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var subType in Model.SubscriptionTypes)
+                {
+                    <tr>
+                        <td>@subType.TypeName</td>
+                        <td>@subType.Price</td>
+                        <td class="cust-act">
+                            <a asp-controller="SubscriptionTypes" asp-action="Edit" asp-route-id="@subType.Id" class="btn btn-warning btn-sm">
+                                <i class="fa-solid fa-edit"></i> Edit
+                            </a>
+                            <a href="javascript:void(0);" onclick="loadDetails(@subType.Id)" class="btn btn-secondary btn-sm">
+                                <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
+                            <form asp-controller="SubscriptionTypes" asp-action="Delete" asp-route-id="@subType.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this Subscription Type?')">
+                                    <i class="fa-solid fa-trash-can"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Right Column: Create New Subscription Type Form -->
+    <div class="col-10 col-xl-3 ms-xl-5">
+        <h4>Create New Subscription Type</h4>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Row: Type Name -->
+            <div class="form-floating mb-3">
+                <input asp-for="NewSubscriptionType.TypeName" class="form-control" placeholder="Type Name" />
+                <label asp-for="NewSubscriptionType.TypeName">Type Name</label>
+                <span asp-validation-for="NewSubscriptionType.TypeName" class="text-danger"></span>
+            </div>
+
+            <!-- Row: Price -->
+            <div class="form-floating mb-3">
+                <input asp-for="NewSubscriptionType.Price" class="form-control" placeholder="Price" value="" />
+                <label asp-for="NewSubscriptionType.Price">Price</label>
+                <span asp-validation-for="NewSubscriptionType.Price" class="text-danger"></span>
+            </div>
+
+            <!-- Button Row: Side by Side -->
+            <div class="d-flex">
+                <button type="submit" class="btn btn-outline-success btn-sm me-2"
+                        style="border-color: #0A2472; color: #0A2472;"
+                        onmouseover="this.style.backgroundColor='#0A2472'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#0A2472';">
+                    <i class="fa fa-square-plus p-2"></i> Create
+                </button>               
+            </div>
+        </form>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Subscription Type Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="detailsModalBody">
+                    <!-- Content will be loaded here via AJAX -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function loadDetails(id) {
+        $.ajax({
+            url: '@Url.Action("GetDetails", "SubscriptionTypes")/' + id,
+            type: 'GET',
+            success: function (result) {
+                $('#detailsModalBody').html(result);
+                var detailsModal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                detailsModal.show();
+            },
+            error: function (error) {
+                console.log('Error loading details:', error);
+            }
+        });
+    }
+</script>

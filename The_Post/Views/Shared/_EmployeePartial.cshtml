@@ -1,0 +1,71 @@
+﻿@model The_Post.Models.VM.AllEmployeesVM
+
+<div class="p-2">
+    <div class="card">
+        <img class="card-img-top" src="" alt="">
+        <div class="card-body">
+            <h5 class="card-title"><strong>@Model.FirstName @Model.LastName</strong></h5>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-custom">
+                    <i class="fas fa-briefcase me-2"></i>The Post
+                </li>
+                <li class="list-group-item list-group-item-custom">
+                    <i class="fas fa-user me-2"></i>@Model.Role
+                </li>
+                <li class="list-group-item list-group-item-custom">
+                    <i class="fas fa-map-marker-alt me-2"></i>Linköping
+                </li>
+                <li class="list-group-item list-group-item-custom">
+                    <i class="fas fa-phone me-2"></i>@Model.PhoneNumber
+                </li>
+                <li class="list-group-item list-group-item-custom">
+                    <i class="fas fa-envelope me-2"></i>@Model.Email
+                </li>
+            </ul>
+        </div>
+        <div class="card-footer p-0 hstack gap-2">            
+            <button type="button" class="btn btn-sm btn-outline-secondary m-2" data-bs-toggle="modal" data-bs-target="#userModal-@Model.Id">
+                Learn More
+            </button>
+            <div class="p-2 ms-auto">
+                <a asp-controller="Admin" asp-action="EditEmployee" asp-route-userId="@Model.Id" class="btn btn-sm btn-outline-warning">
+                    <i class="fa-solid fa-edit"></i> Edit
+                </a>
+            </div>
+            <div class="vr"></div>
+            <div class="p-2">
+                <form asp-action="DeleteEmployee" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                    <input type="hidden" name="userId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                            onclick="return confirm('Are you sure you want to delete this user?')">
+                        <i class="fa-solid fa-trash-can"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+        
+    <div class="modal fade" id="userModal-@Model.Id" tabindex="-1" aria-labelledby="userModalLabel-@Model.Id" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">@Model.FirstName @Model.LastName</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Username:</strong> <em>@Model.UserName</em></p>
+                    <p><strong>Date of Birth:</strong> <em>@(Model.DOB?.ToString("yyyy-MM-dd") ?? "N/A")</em></p>
+                    <hr>
+                    <p>
+                        <strong>Address:</strong><br>
+                        <em>@Model.Address</em><br>
+                        <em>@Model.Zip @Model.City</em>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

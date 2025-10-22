@@ -1,0 +1,48 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<div class="col-lg-9 mx-auto">
+
+    <h2 class="fw-bold text-md-start text-center ms-md-4"
+        style="color: #343a40;  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  background: rgba(255, 255, 255, 0.1);backdrop-filter: blur(10px);"
+        >Manage your account</h2>
+
+    <hr class="ms-md-2" />
+    <div class="row">
+        <!-- Sidebar for large screens -->
+        <div class="col-md-3 d-none d-md-block">
+            <partial name="_ManageNav" />
+        </div>
+
+        <!-- Dropdown for small screens -->
+        <div class="col-12 d-md-none mb-5">
+            <div class="dropdown">
+                <button class="btn btn-custom-blue dropdown-toggle w-100" type="button" id="manageNavDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account Menu
+                </button>
+                <ul class="dropdown-menu w-100" aria-labelledby="manageNavDropdown">
+                    <li>
+                        <partial name="_ManageNav" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

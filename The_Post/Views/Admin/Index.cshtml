@@ -1,0 +1,358 @@
+﻿@model The_Post.Models.VM.AdminDashboardVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutForAdmin";
+}
+
+<style>    
+    /* Dashboard Grid Layout */
+    .dashboard-grid {
+        display: grid;
+        gap: 20px;
+    }
+    /* For large screens (min-width: 1200px and above):
+        - Define 4 columns and 3 rows.
+        - The grid-template-areas assign:
+            • Row 1: "articles employees users subscriptions"
+            • Row 2: "mostLiked roles views-archived subscriptions"
+            • Row 3: "usersAges usersAges usersAges usersAges"
+        This means the subscriptions card occupies the right column spanning both rows.
+    */
+    @@media (min-width: 1200px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            grid-template-areas:
+                "articles employees users subscriptions"
+                "mostLiked roles views-archived subscriptions"
+                "usersAges usersAges usersAges usersAges";
+        }
+
+        .total-articles { grid-area: articles; }
+
+        .total-employees { grid-area: employees; }
+
+        .total-users { grid-area: users; }
+
+        .subscriptions { grid-area: subscriptions; }
+
+        .most-liked { grid-area: mostLiked; }
+
+        .total-roles { grid-area: roles; }
+
+        .views-archived { grid-area: views-archived; }
+
+        .users-ages { grid-area: usersAges; }
+
+        .custom-icon {
+            font-size: 3rem;
+        }
+    }
+    /* For medium screens (max-width: 1200px to min-width: 768px):
+        - Use a 3‑column layout and subscription takes up its own row.   
+    */
+    @@media (max-width: 1200px) and (min-width: 768px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto auto;
+            grid-template-areas:
+                "articles employees users"
+                "subscriptions subscriptions subscriptions"
+                "mostLiked roles views-archived"
+                "usersAges usersAges usersAges";
+        }
+
+        .total-articles { grid-area: articles; }
+
+        .total-employees { grid-area: employees; }
+
+        .total-users { grid-area: users; }
+
+        .subscriptions { grid-area: subscriptions; }
+
+        .most-liked { grid-area: mostLiked; }
+
+        .total-roles { grid-area: roles; }
+
+        .views-archived { grid-area: views-archived; }
+
+        .users-ages { grid-area: usersAges; }
+
+        .custom-icon {
+            font-size: 2.8rem;
+        }
+
+        .subsBC {
+            height: 200px;           
+        }        
+    }    
+    
+    /* For small screens (max-width: 768px and below): Stack all cards in one column */
+    @@media (max-width: 768px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .custom-icon {
+            font-size: 3.5rem;
+        }
+
+        .subsBC {
+            height: 150px;
+        }
+    }
+</style>
+
+<div class="container-fluid py-3 px-3">
+    <!-- Dashboard Grid for All Cards -->
+    <div class="dashboard-grid">
+        <!-- Total Articles Card -->
+        <div class="card total-articles custom-shadow rounded-4">
+            <div class="card-body d-flex flex-column h-100 pt-0 px-3 pb-3 overflow-hidden">
+                <div class="flex-shrink-0">
+                    <p class="m-0 fs-1 fw-bold">@Model.TotalArticles</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fs-6"><strong>Articles</strong></h5>
+                    <i class="fa-solid fa-newspaper custom-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Employees Card -->
+        <div class="card total-employees custom-shadow rounded-4">
+            <div class="card-body d-flex flex-column h-100 pt-0 px-3 pb-3 overflow-hidden">
+                <div class="flex-shrink-0">
+                    <p class="m-0 display-5 fw-bold">@Model.TotalEmployees</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fs-6"><strong>Employees</strong></h5>
+                    <i class="fa-solid fa-user-tie custom-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Users Card -->
+        <div class="card total-users custom-shadow rounded-4">
+            <div class="card-body d-flex flex-column h-100 pt-0 px-3 pb-3 overflow-hidden">
+                <div class="flex-shrink-0">
+                    <p class="m-0 display-5 fw-bold">@Model.TotalUsers</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fs-6"><strong>Registered Users</strong></h5>
+                    <i class="fa-solid fa-users custom-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Subscriptions Card + Chart (spans two rows) -->
+        <div class="card subscriptions custom-shadow rounded-top-4 rounded-bottom-0">
+            <div class="card-body d-flex flex-column h-100">
+                <div class="flex-shrink-0">
+                    <p class="m-0 display-5 fw-bold">@Model.ActiveSubscriptions</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fs-6"><strong>Active Subscriptions</strong></h5>
+                    <i class="fa-solid fa-pen-fancy custom-icon"></i>
+                </div>
+                <div class="subsBC mt-3 flex-grow-1">
+                    <canvas id="subscriptionBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Most Liked Article Card -->
+        <div class="card most-liked custom-shadow rounded-0">
+            <div class="card-body">
+                <h5 class="card-title mb-3"><strong>Most Liked Article</strong></h5>
+                <!-- Inner Card for Article -->
+                <div class="card border-0 shadow rounded-3 mx-auto" style="max-width: 250px;">
+                    <img src="@Model.MostLikedImage" class="card-img-top img-fluid rounded-top" alt="No Article Image">
+                    <div class="card-body p-2 text-center">
+                        <h6 class="card-title mb-1">@Model.MostLikedArticle</h6>
+                    </div>
+                </div>
+                <!-- Likes Count: number on left, "Likes" text vertically centered on right -->
+                <div class="d-flex align-items-center mt-1 gap-1">
+                    <p class="m-0 display-5 fw-bold">@Model.MostLikedArticleLikes</p>
+                    <p class="m-0"><strong>Likes</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Roles Card -->
+        <div class="card total-roles custom-shadow rounded-0">
+            <div class="card-body d-flex flex-column h-100">
+                <h5 class="card-title mb-3"><strong>Total Roles</strong></h5>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <p class="m-0 display-6 fw-bold">@Model.TotalAdmin</p>
+                    <p class="card-text"><strong>Admins</strong>&ensp;<i class="fa-solid fa-toolbox"></i></p>
+                </div>
+                <hr />
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <p class="m-0 display-6 fw-bold">@Model.TotalEditors</p>
+                    <p class="card-text"><strong>Editors</strong>&ensp;<i class="fa-solid fa-spell-check"></i></p>
+                </div>
+                <hr />
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <p class="m-0 display-6 fw-bold">@Model.TotalWriters</p>
+                    <p class="card-text"><strong>Writers</strong>&ensp;<i class="fa-solid fa-pencil"></i></p>
+                </div>
+                <hr />
+            </div>
+        </div>
+
+        <!-- Total Views and Total Archived Articles Card -->
+        <div class="card views-archived custom-shadow rounded-0">
+            <div class="card-body d-flex flex-column h-100 pt-0 px-3 pb-3 overflow-hidden">
+                <div class="flex-shrink-0">
+                    <p class="m-0 fs-1 fw-bold">@Model.TotalViews</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fs-6"><strong>Total views</strong></h5>
+                    <i class="fa-solid fa-eye custom-icon"></i>
+                </div>
+                <hr />
+                <div class="flex-shrink-0">
+                    <p class="m-0 fs-1 fw-bold">@Model.ArchivedArticles</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fs-6"><strong>Archived Articles</strong></h5>
+                    <i class="fa-solid fa-archive custom-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Ages Line Graph Card -->
+        <div class="card users-ages custom-shadow rounded-top-0 rounded-bottom-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3"><strong>User Age Distribution</strong></h5>              
+                <div style="height:250px;">
+                    <canvas id="ageLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        'use strict';
+
+        // ----- Subscription Bar Chart -----
+        try {
+            const subscriptionCtx = document.getElementById('subscriptionBarChart').getContext('2d');
+
+            new Chart(subscriptionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Total', 'Active', 'Expired'],
+                    datasets: [{
+                        label: 'Subscriptions',
+                        data: [
+                            @Model.TotalSubscribers,
+                            @Model.ActiveSubscriptions,
+                            @Model.ExpiredSubscriptions
+                        ],
+                        backgroundColor: ['#284ba7', '#28a745', '#dc3545'],
+                        borderColor: ['#284ba7', '#28a745', '#dc3545'],
+                        borderWidth: 1,
+                        barPercentage: 0.3,
+                        categoryPercentage: 0.8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Subscription Status' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Count' }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Subscription Chart Error:', error);
+        }
+
+        // ----- User Ages Line Chart -----
+        try {
+            const ageCtx = document.getElementById('ageLineChart').getContext('2d');
+            const userAges = JSON.parse('@Html.Raw(Json.Serialize(Model.UserAges))') || [];
+
+            if (userAges.length === 0) {
+                throw new Error('No user age data available');
+            }
+
+            // Create sorted unique labels and compute the frequency of each age
+            const labels = [...new Set(userAges)].sort((a, b) => a - b);
+            const data = labels.map(age => userAges.filter(a => a === age).length);
+
+            // Make x-axis start at 0 by adding 0 to labels if not present.
+            if (!labels.includes(0)) {
+                labels.unshift(0);
+                data.unshift(0); 
+            }
+
+            // Calculate the max count and add 1 for the y-axis maximum.
+            const maxCount = Math.max(...data);
+
+            new Chart(ageCtx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Number of Users',
+                        data,
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: (context) => `Age: ${context[0].label}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Age' },
+                            ticks: { precision: 0 },
+                            grid: { display: false }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: maxCount + 1,
+                            title: { display: true, text: 'Number of Users' },
+                            ticks: { precision: 0 },
+                            grid: { color: '#e9ecef' }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Age Chart Error:', error);
+            const chartContainer = document.getElementById('ageLineChart').closest('.card-body');
+            if (chartContainer) {
+                chartContainer.innerHTML = `<p class="text-danger">${error.message}</p>`;
+            }
+        }
+    });
+</script>
+

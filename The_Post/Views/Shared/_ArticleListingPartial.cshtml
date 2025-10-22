@@ -1,0 +1,27 @@
+@model The_Post.Models.Article
+
+
+<div class="mx-auto col-lg-12 d-flex flex-column align-items-start gap-1">
+
+    <img id="articleImage" src="@Model.ImageMediumLink" data-original="@Model.ImageOriginalLink" class="img-fluid article-image-height mx-auto" alt="Article  image" /> <!--We maybe should add an alt-text to the image in the Article table -->
+
+
+    <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@Model.Id" class="h2 text-dark text-decoration-none fw-bolder mb-0">
+            @Model.HeadLine
+    </a>
+
+    <div class="fs-4 align-self-start mt-n2"> @Model.LinkText </div> <!--LinkText should be used because it is shorter than ContentSummary-->
+
+    <div class="d-flex gap-2 flex-wrap align-self-start fs-6 mt-2">
+        @foreach (var category in Model.Categories)
+        {
+            <a class="badge bg-secondary text-decoration-none text-white"
+               asp-action="CategoryView"
+               asp-controller="News" asp-route-categoryName="@category.Name">
+                @category.Name
+            </a>
+        }
+    </div>
+    
+    <hr class="w-100 mt-3 mb-4" style="height: 1px;" />
+</div>

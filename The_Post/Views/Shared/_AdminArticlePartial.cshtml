@@ -1,0 +1,57 @@
+﻿@model The_Post.Models.Article
+
+<div class="p-2 col-md-3">
+    <div class="card mt-1 mb-3">   
+        <div class="position-relative @(Model.IsArchived ? "archived-css" : "")">
+            @* This div is for stretched-link focusing, so it only targets the Image and card-body *@
+            <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@Model.Id" class="stretched-link"></a>
+            <div class="ratio ratio-4x3 img-thumbnail">
+                <img src="@Model.ImageSmallLink" data-original="@Model.ImageOriginalLink" class="card-img-top" alt="No Article Image">
+            </div>
+            <div class="card-body" style="height:100px;">
+                <h5 class="card-title">@Model.HeadLine</h5>
+                
+            </div>
+        </div>
+       
+        <div class="card-footer p-0 hstack gap-2">
+            <div class="form-check m-2">
+                <input 
+                    class="form-check-input is-archive-check" 
+                    type="checkbox" 
+                    id="isArchived_@Model.Id"
+                    @(Model.IsArchived ? "checked" : "")
+                    data-article-id="@Model.Id"
+                >
+                <label class="form-check-label small" for="isArchived_@Model.Id">
+                    Archived
+                </label>
+            </div>
+            <div class="vr"></div>
+            <div class="form-check form-switch m-2">
+                <input 
+                    class="form-check-input editors-choice-toggle" 
+                    type="checkbox" 
+                    role="switch"                    
+                    @(Model.EditorsChoice ? "checked" : "")
+                    data-article-id="@Model.Id"
+                >
+                <span class="form-check-label small">Editor's Choice</span>
+            </div>
+            <div class="vr ms-auto"></div>
+            <div class="p-2 ">
+                <a asp-controller="Article" asp-action="EditArticle" asp-route-articleID="@Model.Id" class="btn btn-sm btn-outline-warning">Edit</a>
+            </div>
+            <div class="vr"></div>
+            <div class="p-2">
+                <form asp-controller="Article" asp-action="DeleteArticle" asp-route-articleID="@Model.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                            onclick="return confirm('Are you sure you want to delete this Article?')">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

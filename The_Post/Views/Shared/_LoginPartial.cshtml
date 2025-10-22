@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {   
+        var currentUser = await UserManager.GetUserAsync(User);
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="My Profile">
+                @if (User.IsInRole("Admin"))
+                {
+                    if(currentUser != null)
+                    {
+                        <span class="fw-bold" style="font-size: 1rem;color: #0A2472 !important;">@currentUser.FirstName</span>
+                    }
+                    else
+                    {
+                        <span class="fw-bold" style="font-size: 1rem;color: #0A2472 !important;">Admin</span>
+                    }
+                    
+                    <img src="~/images/AdminPicture.png" alt="admin" width="40" height="34" class="rounded-circle">                    
+                }                
+                else
+                {
+                    if (currentUser != null)
+                    {
+                        <span class="fw-bold" style="font-size: 1rem;color: #0A2472 !important;">@currentUser.FirstName</span>
+                    }
+                    else
+                    {
+                        <span class="fw-bold" style="font-size: 1rem;color: #0A2472 !important;">Profile</span>
+                    }
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M13.468 12.37C12.758 11.226 11.377 10 8 10s-4.758 1.226-5.468 2.37A6.973 6.973 0 0 0 8 15a6.973 6.973 0 0 0 5.468-2.63z" />
+                        <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1z" />
+                    </svg>
+                }                
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end text-small" style="z-index: 2000 !important;">
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">My Page</a></li>                
+                <li><hr class="dropdown-divider"></li>
+                <li>                    
+                    <form method="post" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="p-0 text-primary fw-bold bg-transparent border-0 w-100 text-start" style="font-size: 1rem;color: #0A2472 !important;">Sign out</button>
+                    </form>
+                </li>
+            </ul>            
+        </li>    
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark fw-bold " style="font-size: 1rem;color: #0A2472 !important;" ; asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark fw-bold " style="font-size: 1rem;color: #0A2472 !important;" ; asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

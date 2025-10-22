@@ -1,0 +1,90 @@
+﻿<div class="offcanvas offcanvasMobile offcanvas-start bg-dark-subtle" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header p-1 ">
+        <!-- Sidebar -->
+        <div class="d-flex flex-column flex-shrink-0 ">
+            <div class="d-flex  align-items-center d-lg-none">
+                <button type="button" class="btn-close btn-close-dark position-absolute end-0 me-2 p-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div class="dropdown text-end me-3">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- small screen) -->
+    <a asp-action="Index" asp-controller="Admin" class="d-md-none d-flex align-items-center justify-content-center px-2 border-bottom border-dark link-body-emphasis text-decoration-none" style="height: 38px;">
+        <span class="fs-3"><strong>ThePost</strong><em>Admin</em></span>
+    </a>
+
+    <!-- Search Bar (Only on Small Screens) -->
+    <div class="p-3 d-md-none">
+        <form asp-controller="Article" asp-action="SearchResults" method="get" class="d-flex">
+            <input class="form-control me-2" type="search" name="searchTerm" placeholder="Search articles..." aria-label="Search">
+            <button class="btn btn-dark" type="submit">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="white" aria-hidden="true">
+                    <path d="M13 3a10 10 0 0 1 7.54 16.68l7.39 7.39-1.41 1.41-7.39-7.39A10 10 0 1 1 13 3m0 2a8 8 0 1 0 5.6 13.6A8 8 0 0 0 13 5"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <div class="offcanvas-body">
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li>
+                <a href="/" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                    <i class="fa fa-home p-2"></i>
+                    Homepage
+                </a>
+            </li>
+            <li>
+                <a asp-action="Index" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                    <i class="fa fa-gauge-high p-2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a asp-action="AllArticles" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                    <i class="fa fa-newspaper p-2"></i>
+                    Articles
+                </a>
+            </li>
+            <li>
+                <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
+                    <i class="fa fa-file-circle-plus p-2"></i>
+                    Add Article
+                </a>
+            </li>
+
+                @if (User.IsInRole("Admin"))
+            {
+                <li>
+                    <a asp-action="EmployeeManagement" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-address-card p-2"></i>
+                        Employee Management
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-user-tie p-2"></i>
+                        Roles Management
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="SubscriptionTypes" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-pen-fancy p-2"></i>
+                        Subscription Management
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="SubscriptionStats" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-chart-column p-2"></i>
+                        Subscription Statistics
+                    </a>
+                </li>
+             }
+        </ul>
+        <svg class="wave-divider" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="#0A2472" d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,192C672,171,768,149,864,160C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+ </div>

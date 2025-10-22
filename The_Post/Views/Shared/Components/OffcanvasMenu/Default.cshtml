@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+ <!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start w-25" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+
+    <div class="offcanvas-header bg-dark text-white  d-flex justify-content-center align-items-center w-100">
+
+        <!-- Show "The Post" only on small devices -->
+        <h4 class="offcanvas-title d-md-none text-center fw-bold fs-3" style="letter-spacing: 2px;text-transform: uppercase;" id="offcanvasWithBothOptionsLabel">The Post</h4>
+        <!-- Show "Menu" only on larger devices -->
+        <h4 class="offcanvas-title d-none d-md-block " id="offcanvasWithBothOptionsLabel">Menu</h4>
+        <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+    </div>
+
+    <!-- Search Bar (Only on Small Screens) -->
+    <div class="p-3 d-md-none">
+        <form asp-controller="Article" asp-action="SearchResults" method="get" class="d-flex">
+            <input class="form-control me-2" type="search" name="searchTerm" placeholder="Search articles..." aria-label="Search">
+            <button class="btn btn-dark" type="submit">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="white" aria-hidden="true">
+                    <path d="M13 3a10 10 0 0 1 7.54 16.68l7.39 7.39-1.41 1.41-7.39-7.39A10 10 0 1 1 13 3m0 2a8 8 0 1 0 5.6 13.6A8 8 0 0 0 13 5"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <div class="p-3 d-flex gap-2 d-md-none">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-dark w-50 text-center" asp-area="Identity" asp-page="/Account/Manage/Index" title="My Profile">My Profile</a>
+
+            <div class="d-flex w-50">
+                <form class="w-100" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="btn btn-outline-dark w-100 text-center">Logout</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <a class="btn btn-dark w-50 text-center" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="btn btn-outline-dark w-50 text-center" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        }
+    </div>
+
+
+    <div class="offcanvas-body">
+        <ul class="list-unstyled ps-0">
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Home" asp-action="Index">Home</a></li>
+
+            @if (User.Identity.IsAuthenticated && !User.IsInRole("Member"))
+            {
+                <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>    
+            }
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Local">Local</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sweden">Sweden</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="World">World</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Weather">Weather</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sports">Sports</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Economy">Economy</a></li>
+
+        </ul>
+    </div>
+</div>
+
+
+<style>
+ 
+   /* Sidebar Links Styling */
+   .sidebar-link {
+       color: black !important; 
+       font-weight: bold; 
+       padding: 10px 15px; 
+       display: block; 
+       text-decoration: none; 
+       border-bottom: 1px solid gray; 
+   }
+ 
+   /* Hover Effect */
+   .sidebar-link:hover {
+       background-color: rgba(255, 255, 255, 0.3);
+       color: gray !important; 
+       transition: background-color 0.3s ease-in-out; 
+   }
+</style>
+

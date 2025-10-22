@@ -1,0 +1,89 @@
+﻿@page
+@model The_Post.Areas.Identity.Pages.Account.Manage.SubscriptionModel
+@{
+    ViewData["Title"] = "Subscription";
+    ViewData["ActivePage"] = ManageNavPages.Subscription;
+}
+<div class="form-container-Nav-Pages mx-auto text-center">
+    <h4 class="form-title-Nav-Pages">Subscribe</h4>
+    <hr />
+
+    <div class="container">
+        <div class="row px-2">
+            <!-- Basic Card -->
+            <div class="col-md-6 d-flex my-2 ">
+                <div class="card shadow-lg h-100 d-flex flex-column border-0">
+                    <div class="card-header text-white text-center align-items-center" style="min-height:80px;background-color: #B5B5B5">
+                        <h4 class="card-title "><strong> Basic</strong></h4>
+                        <p class="card-subtitle fw-light ">Default Subscription</p>
+                    </div>
+                    <div class="card-body flex-grow-1">
+                        <p class="card-text text-center"><strong>A basic membership that you get when you register.</strong></p>
+                        <div class="card-body rounded-border-gray p-3 mx-auto w-100" style="min-height:180px;">
+                            <p class="card-text">Free of charge.</p>
+                            <p class="card-text"><i class="fa-solid fa-check text-success"></i> <em>See Images, Headlines, and a content summary</em></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Card -->
+            <div class="col-md-6 d-flex my-2">
+                <div class="card shadow-lg h-100 d-flex flex-column border-0">
+                    <div class="card-header  text-white text-center" style="min-height:80px;background-color: #0A2472;">
+                        <h4 class="card-title"><strong>Premium</strong></h4>
+                        <p class="card-subtitle fw-light">Unlimited access to all articles</p>
+                    </div>
+                    <div class="card-body flex-grow-1">
+                        <p class="card-text text-center"><strong>Become a Premium member to read this article and more.</strong></p>
+                        <div class="card-body rounded-border-gray p-3 mx-auto w-100 bg-light" style="min-height:180px;">
+                            <p class="card-text">For only <strong>99kr/month</strong>, you can:</p>
+                            <p class="card-text"><i class="fa-solid fa-check text-success"></i> <em>Read all articles as much as you want</em></p>
+                            <p class="card-text"><i class="fa-solid fa-check text-success"></i> <em>Search and read archived articles</em></p>
+                            <p class="card-text"><i class="fa-solid fa-check text-success"></i> <em>Keep up with the latest news</em></p>
+                        </div>
+
+                        <div class="d-grid col-8 mx-auto mt-3">
+                            @if (Model.CurrentSubscriptionType == null || Model.CurrentSubscriptionType.TypeName != "Premium")
+                            {
+                                <form method="post" asp-page-handler="Subscribe">
+                                    <input type="hidden" name="subscriptionTypeId" value="1" />
+                                    <button type="submit" class="btn btn-custom-blue">
+                                        Subscribe Now
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" asp-page-handler="Cancel">
+                                    <input type="hidden" name="subscriptionTypeId" value="1" />
+                                    <button type="submit" class="btn btn-danger">
+                                        Cancel Subscription
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                        <p class="fs-6 fw-light text-center mt-3">Only one month at a time, no long binding periods!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toastr Message for Subscriptions
+document.addEventListener("DOMContentLoaded", function () {
+    var successMessage = '@TempData["SuccessMessage"]';
+    var errorMessage = '@TempData["ErrorMessage"]';
+
+    if (successMessage) {
+        toastr.success(successMessage);
+    }
+
+    if (errorMessage) {
+        toastr.error(errorMessage);
+    }    
+    
+});    
+</script>

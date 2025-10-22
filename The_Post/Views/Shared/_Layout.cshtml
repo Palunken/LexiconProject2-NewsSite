@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - The_Post</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/The_Post.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+</head>
+ <body>
+  <header>
+     <nav class="navbar navbar-expand-sm navbar-light sticky-top bg-white box-shadow p-0 mb-3 custom-border">
+        <div class="container-fluid d-flex flex-column px-1">
+           <div class="header-container">
+              <!-- Left section (Offcanvas menu button & Search) -->
+              <div class="d-flex align-items-center gap-3 side-controls left-controls">
+                  <!-- Offcanvas Toggle Button -->
+                  <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions" aria-expanded="false" title="Menu">
+                      <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
+                                <path d="M1 7.5h30V1.9H1v5.6zm0 22.6h30v-5.6H1v5.6zm0-11.3h30v-5.6H1v5.6z" fill="#0A2472"></path>
+                      </svg>
+                  </button>
+    
+                  <!-- Search Bar -->
+                  <form asp-controller="Article" asp-action="SearchResults" method="get" class="align-items-center rounded-lg overflow-hidden hide-button">
+                            <input type="search" name="searchTerm" placeholder="Search Articles..." class="responsive-search px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                            <button aria-label="Search The Post" title="Search" style="all: unset; cursor: pointer; " class="p-2 bg-white hover:bg-gray-100 border-none outline-none" >
+                             <svg viewBox="0 0 32 32" width="25" height="25" category="actions" icon="search" aria-hidden="true" fill="currentColor">
+                                <path d="m30.6 28.1-8.3-8.3c1.5-2 2.4-4.4 2.4-7.2C24.7 6 19.6 1 13 1S1.4 6.1 1.4 12.7 6.5 24.3 13 24.3c2.3 0 4.4-.6 6.2-1.8l8.5 8.5 2.9-2.9zM4 12.6c0-5.2 3.9-9.1 9-9.1s9 3.9 9 9.1c0 5.2-3.9 9.1-9 9.1s-9-3.9-9-9.1z"></path>
+                             </svg>
+                      </button>
+                  </form>
+
+              </div>
+
+                    <!-- Center section (Brand) -->
+                    <div class="brand-container">
+                        <a class ="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                            The Post
+                        </a>
+                    </div>
+
+                    <!-- Right section (Login) -->
+                    <div class="side-controls right-controls me-2">
+                        <partial name="_LoginPartial" />
+                    </div>
+               
+           </div>
+
+           <div class="w-100 bottom-section d-none d-md-flex  justify-content-center align-items-center flex-grow-0 py-1">
+
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Local">Local</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sweden">Sweden</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="World">World</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Weather">Weather</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sports">Sports</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Economy">Economy</a>
+                                           
+           </div>
+        </div>
+          
+     </nav>
+  </header>  
+
+    <!-- Invoke the Offcanvas Menu View Component -->
+      @await Component.InvokeAsync("OffcanvasMenu")
+
+    <!-- Cookies Notice-->
+    @if (!(ViewData["IsCookiesAccepted"] as bool? ?? false))
+    {
+        <div id="cookie-notice" class="toast show position-fixed top-50 start-50 translate-middle bg-white fs-5" style="width: 80%; max-width: 500px;" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Cookie Notice</strong>
+                <button type="button" class="btn-close" id="ignore-cookies-btn-header" aria-label="Ignore"></button>
+            </div>
+            <div class="toast-body">
+                <p class="mb-2">
+                    This website uses cookies to ensure you get the best experience.
+                    <a href="/Home/Privacy">Learn more</a>
+                </p>
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-primary btn-md" id="accept-cookies-btn">Accept</button>
+                    <button class="btn btn-secondary btn-md" id="ignore-cookies-btn">Ignore</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="container col-lg-11" style="max-width: 2200px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="footer bg-dark text-light py-1">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 - <strong>The Post</strong></p>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-light text-decoration-none">Privacy Policy</a>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

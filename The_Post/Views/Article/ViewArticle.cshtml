@@ -1,0 +1,7 @@
+﻿@model The_Post.Models.Article
+
+@{
+    ViewData["Title"] = Model.HeadLine;
+}
+
+<partial name="../Shared/_ArticlePartial" model="Model"/>

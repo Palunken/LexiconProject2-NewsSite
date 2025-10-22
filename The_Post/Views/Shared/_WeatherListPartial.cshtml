@@ -1,0 +1,8 @@
+﻿@model IEnumerable<The_Post.Models.API.WeatherForecast>
+<!--Partial view used to send an updated list to the main view after a weather card has been removed-->
+<div class="d-flex gap-3 flex-nowrap overflow-auto" style="max-width: 100%; padding-bottom: 15px;" id="weatherCardsContainer">
+    @foreach (var forecast in Model)
+    {
+        <partial name="../Shared/_WeatherPartial" model="forecast" />
+    }
+</div>

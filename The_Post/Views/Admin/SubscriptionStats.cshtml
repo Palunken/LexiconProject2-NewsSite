@@ -1,0 +1,165 @@
+﻿@model The_Post.Models.VM.SubscriptionStatsVM
+
+@{
+    ViewData["Title"] = "SubscriptionStats";
+    Layout = "_LayoutForAdmin";
+}
+
+<div class="row mt-4">
+    <div class="col-md-8 col-lg-6">
+        <h2><strong><em>Subscription Statistics</em></strong></h2>
+        <p class="mb-3" style="border-bottom: 1px solid #A8A8A8;"></p>
+    </div>
+</div>
+
+<div class="container mx-3">
+    <!-- Info square -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="border border-black bg-info-subtle p-2">
+                <p class="mb-1"><strong>Total Subscribers: </strong> <em>@Model.TotalSubscribers</em></p>
+                <p class="mb-1"><strong>Active Subscriptions: </strong> <em>@Model.ActiveSubscriptions</em></p>
+                <p class="mb-1"><strong>Expired Subscriptions: </strong><em>@Model.ExpiredSubscriptions</em></p>
+            </div>
+        </div>               
+    </div>
+    
+    <div class="row mt-3">
+        <!-- Bar Chart -->
+        <div class="col-md-6">
+            <div class="ratio ratio-16x9">
+                <!-- Canvas for Chart.js -->
+                <canvas class="border border-dark" id="subscriptionBarChart"></canvas>
+            </div>
+        </div>
+        <!-- Line Chart -->
+        @* <div class="col-md-6">
+            <div class="ratio ratio-16x9">
+                <!-- Canvas for Chart.js -->
+                <canvas class="border border-dark" id="subscriptionLineChart"></canvas>
+            </div>
+        </div> *@
+    </div>        
+</div>
+
+<script>
+    // Wait for the DOM to be loaded
+    document.addEventListener("DOMContentLoaded", async function () {
+
+        // ----- Bar Chart -----
+
+        var ctx = document.getElementById('subscriptionBarChart').getContext('2d'); // Get the canvas element and the rendering context type
+
+        // Create a new chart
+        var subscriptionBarChart = new Chart(ctx, {
+            type: 'bar', // We can also use 'pie' or 'line' here if we want
+            data: {
+                labels: ['Total', 'Active', 'Expired'], // Labels for the X axis
+                datasets: [{
+                    label: 'Subscriptions',
+                    data: [@Model.TotalSubscribers, @Model.ActiveSubscriptions, @Model.ExpiredSubscriptions], // Data values
+                    backgroundColor: ['#284ba7', '#28a745', '#dc3545'], // Colors for the bars
+                    borderColor: ['#284ba7','#28a745', '#dc3545'], // Border colors for the bars
+                    borderWidth: 1, // Border width for the bars
+                    barPercentage: 0.3, // Bar will occupy 60% of the category width
+                    categoryPercentage: 0.8 // Category will occupy 80% of the available width
+                }]
+            },
+            options: { // Chart configuration options
+                responsive: true, // Make the chart automatically resize to fit its container
+                plugins: {
+                    legend: {
+                        position: 'top', // Position the legend (labels for the dataset, e.g., "Subscriptions") at the top of the chart
+                    },
+                    tooltip: {
+                        enabled: true // Enable tooltips that display detailed info (e.g., data values like Total Subscribers) on hover
+                    }
+                },
+                scales: { // Scales for the chart
+                    x: {
+                        beginAtZero: true // Start the X axis at zero
+                    },
+                    y: {
+                        beginAtZero: true  // Start the Y axis at zero
+                    }
+                }
+            }
+        });
+
+        // ----- Line Chart -----
+        // try {
+        //     const response = await fetch('/Admin/SubscriptionStatsOverTime');
+        //     if (!response.ok) {
+        //         throw new Error('Network response was not ok: ' + response.statusText);
+        //     }
+        //     const data = await response.json();
+        //     if (!data || data.length === 0) {
+        //         throw new Error("No data received from endpoint");
+        //     }
+        //     var labels = data.map(item => item.Month);
+        //     var totalData = data.map(item => item.TotalSubscribers);
+        //     var activeData = data.map(item => item.ActiveSubscriptions);
+        //     var expiredData = data.map(item => item.ExpiredSubscriptions);
+
+        //     var ctxLine = document.getElementById('subscriptionLineChart').getContext('2d'); // Get the canvas element and the rendering context type
+        //     var subscriptionLineChart = new Chart(ctxLine, {
+        //         type: 'line', // We can also use 'pie' or 'bar' here if we want
+        //         data: {
+        //             labels: labels, // Labels for the X axis
+        //             datasets: [{
+        //                 label: 'Total Subscribers',
+        //                 data: totalData, // Data values
+        //                 showLine: true, // forces a line even if there's only one point
+        //                 fill: false, // Do not fill the area under the line
+        //                 borderColor: '#284ba7', // Border color for the line
+        //                 tension: 0.1 // Line tension (0 for straight lines)
+        //             },
+        //             {
+        //                 label: 'Active Subscriptions',
+        //                 data: activeData, // Data values
+        //                 showLine: true, // forces a line even if there's only one point
+        //                 fill: false, // Do not fill the area under the line
+        //                 borderColor: '#28a745', // Border color for the line
+        //                 tension: 0.1 // Line tension (0 for straight lines)
+        //             },
+        //             {
+        //                 label: 'Expired Subscriptions',
+        //                 data: expiredData, // Data values
+        //                 showLine: true, // forces a line even if there's only one point
+        //                 fill: false, // Do not fill the area under the line
+        //                 borderColor: '#dc3545', // Border color for the line
+        //                 tension: 0.1 // Line tension (0 for straight lines)
+        //             }]
+        //         },
+        //         options: { // Chart configuration options
+        //             responsive: true, // Make the chart automatically resize to fit its container
+        //             plugins: {
+        //                 legend: {
+        //                     position: 'top', // Position the legend (labels for the dataset, e.g., "Subscriptions") at the top of the chart
+        //                 },
+        //                 tooltip: {
+        //                     enabled: true // Enable tooltips that display detailed info (e.g., data values like Total Subscribers) on hover
+        //                 }
+        //             },
+        //             scales: { // Scales for the chart
+        //                 x: {
+        //                     beginAtZero: true // Start the X axis at zero
+        //                 },
+        //                 y: {
+        //                     beginAtZero: true  // Start the Y axis at zero
+        //                 }
+        //             }
+        //         }
+        //     });
+        // }
+        // catch (error) {
+        //     console.error('Error fetching subscription data:', error); // Log the error to the console
+        //         var ctxLine = document.getElementById('subscriptionLineChart').getContext('2d'); // Get the canvas element and the rendering context type
+        //         ctxLine.font = '16px Arial'; 
+        //         ctxLine.fillStyle = 'red'; 
+        //         ctxLine.textAlign = 'center';
+        //         ctxLine.fillText('Error loading subscription data', ctxLine.canvas.width / 2, ctxLine.canvas.height / 2); // Display an error message on the canvas
+        // }
+    });    
+</script>
+

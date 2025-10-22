@@ -1,0 +1,44 @@
+﻿@using X.PagedList.Mvc.Core;
+@model The_Post.Models.VM.SearchVM
+
+@{
+    ViewData["Title"] = "Search results";
+    Layout = "_LayoutForAdmin";
+}
+
+
+
+<h2 class="pb-2 mb-4"> Search results for "@Model.SearchTerm"</h2>
+
+<div class="row">
+    @foreach (var article in Model.Articles)
+    {
+            <partial name="_AdminArticlePartial" model="article"></partial>
+    }
+</div>
+
+@if(Model.Articles.PageCount > 1)
+{
+    <!--Displays links to the other pages, if there are any-->
+    <nav aria-label="Admin All artices pages">
+        @Html.PagedListPager(
+                Model.Articles,
+                page => Url.Action("SearchResultsAdmin", "Admin", new { searchTerm = Model.SearchTerm, page }),
+                new PagedListRenderOptions
+    {
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        UlElementClasses = new[] { "pagination", "justify-content-center", "mt-4" },
+        DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+        LinkToFirstPageFormat = "«",
+        LinkToPreviousPageFormat = "‹",
+        LinkToNextPageFormat = "›",
+        LinkToLastPageFormat = "»"
+    }
+                )
+    </nav>
+}
+

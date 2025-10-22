@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = TempData["ArticleMessage"];
+    Layout = "_LayoutForAdmin";
+}
+
+<h4>@TempData["ArticleMessage"]</h4>
+
+
+<div>
+    <a asp-action="AddArticle"> Add another article </a>
+    <br />
+    <a asp-action="AllArticles" asp-controller="Admin"> Back to the All Articles </a>
+    <br />
+    <a asp-action="Index" asp-controller="Home"> Go to the Front Page </a>
+</div>

@@ -1,0 +1,110 @@
+﻿@model The_Post.Models.VM.EditEmployeeVM
+
+@{
+    ViewData["Title"] = "Edit Employee";
+    Layout = "_LayoutForAdmin";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<div class="row mt-4">
+    <div class="col-md-8 col-lg-6">
+        <h2><strong><em>Edit Employee</em></strong></h2>
+
+        <form asp-action="EditEmployee" method="post">
+            <p class="mb-3" style="border-bottom: 1px solid #A8A8A8;"></p>
+
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Row 1: First Name & Last Name -->
+            <div class="row mt-4 pt-2 ps-2">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="FirstName" class="form-control" placeholder="First Name" required />
+                        <label asp-for="FirstName">First Name</label>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="LastName" class="form-control" placeholder="Last Name" required />
+                        <label asp-for="LastName">Last Name</label>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Date of Birth & Address -->
+            <div class="row ps-2">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="DOB" type="date" class="form-control" placeholder="Date of Birth" required />
+                        <label asp-for="DOB">Date of Birth</label>
+                        <span asp-validation-for="DOB" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Address" class="form-control" placeholder="Address" required />
+                        <label asp-for="Address">Address</label>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Zip & City -->
+            <div class="row ps-2">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Zip" class="form-control" placeholder="Zip" required />
+                        <label asp-for="Zip">Zip</label>
+                        <span asp-validation-for="Zip" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="City" class="form-control" placeholder="City" required />
+                        <label asp-for="City">City</label>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Phone Number & Email -->
+            <div class="row ps-2">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" required />
+                        <label asp-for="PhoneNumber">Phone Number</label>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" class="form-control" placeholder="Email" required />
+                        <label asp-for="Email">Email</label>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ps-2">
+                <button type="submit" class="btn btn-outline-success btn-sm"
+                        style="border-color: #0A2472; color: #0A2472;"
+                        onmouseover="this.style.backgroundColor='#0A2472'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#0A2472';">
+                    Save Changes
+                </button>
+                <a asp-action="EmployeeManagement" class="btn btn-outline-secondary btn-sm">Cancel</a>
+            </div>            
+        </form>
+    </div>
+</div>

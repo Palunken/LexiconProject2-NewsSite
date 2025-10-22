@@ -1,0 +1,16 @@
+﻿@page
+@model ConfirmSubscriptionModel
+@{
+    ViewData["Title"] = "Confirm Subscription";
+}
+
+<h2>Subscription Confirmation</h2>
+
+@if (Model.IsSuccess)
+{
+    <p>✅ Your subscription has been successfully activated! 🎉</p>
+}
+else
+{
+    <p>❌ The confirmation link is invalid or expired.</p>
+}

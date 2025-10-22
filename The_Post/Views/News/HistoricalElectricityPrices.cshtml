@@ -1,0 +1,288 @@
+﻿
+    @model The_Post.Models.VM.HistoricalElectricityPricesViewModel
+
+@{
+    ViewData["Title"] = "Historical Electricity Prices";
+    var selectedDate = Model.SelectedDate ?? DateTime.Now.ToString("yyyy-MM-dd"); // Fallback to current date if no date is selected
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model.ErrorOccurred)
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> There was an issue retrieving the data.
+    </div>
+}
+else if (Model.NoHistoricalData)
+{
+    <div class="alert alert-warning">
+        No historical data found for the selected date range.
+    </div>
+}
+else
+{
+    <h3 style="color:#0A2472; text-align:center">Prices for @selectedDate</h3>
+    <h3 style="color:#0A2472">Choose Date</h3>
+    <form method="get" action="@Url.Action("HistoricalElectricityPrices", "News")">
+        <label for="datePicker">Select a Date:</label>
+        <input type="date" id="datePicker" name="date" value="@Model.SelectedDate" required />
+        <button type="submit" class="btn" style="background-color:#0A2472; color: white; border-radius: 5px;">Get Prices</button>
+    </form>
+    <div class="tab-container">
+    <div class="nav nav-tabs">
+        <div class="nav-item">
+            <a class="nav-link" id="tab-se1" onclick="showTab('se1')">SE1 Region</a>
+        </div>
+        <div class="nav-item">
+            <a class="nav-link" id="tab-se2" onclick="showTab('se2')">SE2 Region</a>
+        </div>
+        <div class=" nav-item">
+            <a class="nav-link" id="tab-se3" onclick="showTab('se3')">SE3 Region</a>
+        </div>
+        <div class="nav-item">
+            <a class="nav-link" id="tab-se4" onclick="showTab('se4')">SE4 Region</a>
+        </div>
+    </div>
+
+     <div class="tab-content">
+        <div id="se1" class="tab-pane show active">
+    
+ 
+        <table class="table table-dark table-hover table-bordered table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Hour</th>
+                    <th>Price (SEK)</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var price in Model.ElectricityPrices.Where(p => p.RowKey.StartsWith("SE1")))
+                {
+                    <tr>
+                        <td>@price.RowKey.Substring(4)</td>
+                        <td>@price["price_sek"]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+  
+    <!-- Table for SE2 -->
+            <div id="se2" class="tab-pane" style="display:none;">
+    
+     <table class="table table-dark table-hover table-bordered table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Hour</th>
+                    <th>Price (SEK)</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var price in Model.ElectricityPrices.Where(p => p.RowKey.StartsWith("SE2")).GroupBy(p => new { p.RowKey, p.PartitionKey })
+           .Select(g => g.First()))
+                {
+                    <tr>
+                    <td>@price.RowKey.Substring(4)</td>
+                        <td>@price["price_sek"]</td>
+                         
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+ 
+
+    <!-- Table for SE3 -->
+                <div id="se3" class="tab-pane" style="display:none;">
+       
+   
+        <table class="table table-dark table-hover table-bordered table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Hour</th>
+                    <th>Price (SEK)</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var price in Model.ElectricityPrices.Where(p => p.RowKey.StartsWith("SE3")).GroupBy(p => new { p.RowKey, p.PartitionKey })
+           .Select(g => g.First()))
+                {
+                    <tr>
+                    <td>@price.RowKey.Substring(4)</td>
+                        <td>@price["price_sek"]</td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+   
+
+    <!-- Table for SE4 -->
+                    <div id="se4" class="tab-pane" style="display:none;">
+       
+    
+        <table class="table table-dark table-hover table-bordered table-sm table-striped electricityTable">
+            <thead>
+                <tr>
+                    <th>Hour</th>
+                    <th>Price (SEK)</th>
+                     
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var price in Model.ElectricityPrices.Where(p => p.RowKey.StartsWith("SE4")).GroupBy(p => new { p.RowKey, p.PartitionKey })
+           .Select(g => g.First()))
+                {
+                    <tr>
+                    <td>@price.RowKey.Substring(4)</td>
+                        <td>@price["price_sek"]</td>
+                         
+                    </tr>
+                }
+            </tbody>
+        </table>
+     </div>
+     </div>
+     </div>
+    }
+    
+  
+    <style>
+    /* Container for the tables */
+    .region-table-container {
+        padding: 20px;
+        background-color: #ffffff;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Bootstrap Table Styling */
+    .table {
+        width: 60%; /* Set the table width to 90% of the container */
+        border-collapse: collapse; /* Ensures borders collapse into a single line */
+        background-color: #fff;
+        margin :auto;
+        border-radius: 8px; /* Optional rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    }
+
+    td, th {
+        box-sizing: border-box; /* Ensures borders are properly placed without extra space */
+    }
+
+    th, td {
+        padding: 8px 12px; /* Smaller padding for tighter column spacing */
+        text-align: center;
+        font-size: 1rem; /* Smaller font size for a neat look */
+        border: 1px solid #ddd; /* Border between columns */
+        vertical-align: middle; /* Ensures the content is vertically centered */
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #ffffff;
+    }
+
+    .tab-container .nav-tabs {
+        display: flex;
+        justify-content: center; /* Center the tabs horizontally */
+        margin-bottom: 20px;
+        padding: 0;
+    }
+
+
+     .tab-container .nav-item {
+        margin: 0 10px; /* Space between tabs */
+    }
+
+    
+    /* Inactive tab styling (Grey background for unselected tabs, Custom blue text) */
+    .nav-item .nav-link {
+        display: block;
+        padding: 10px 20px;
+        background-color:white; /* Grey background for inactive tabs */
+        color: #0A2472; /* Custom blue text color for inactive tabs */
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration: none; /* Remove underline */
+    }
+        /* Active tab styling (Blue background with white text) */
+        .nav-item .nav-link.active {
+            background-color: #0A2472; /* Custom blue background for active tab */
+            color: white; /* White text for active tab */
+            border-color: #0A2472; /* Matching border for active tab */
+        }
+   
+     .tab-container .nav-link.active {
+         background-color: #004085; /* Darker blue for active tab */
+        }
+     */
+
+    /* Style for the content area */
+    .tab-container .tab-content {
+        display: block;
+        padding: 20px;
+    }
+
+    .tab-container .tab-pane.show {
+        display: block;
+    }
+
+    .tab-container .tab-pane {
+        padding: 15px; /* Adds padding to the content of each tab */
+        background-color: #f9f9f9; /* Light grey background for the content */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        background-color: white; /* White background for the rest of the page */
+    }
+
+        /* If any unwanted background color is applied, reset it */
+        body > *:not(.tab-container) {
+            background-color: transparent; /* Remove any background color outside of tabs */
+            box-shadow: none; /* Remove any shadow outside of tabs */
+        }
+    </style>
+    
+     <script>
+    function showTab(region) {
+        // Hide all tab content
+        var tabContents = document.querySelectorAll('.tab-pane');
+        tabContents.forEach(function (content) {
+            content.style.display = 'none';  // Hide all content
+        });
+
+        // Remove 'active' class from all tabs
+        var tabs = document.querySelectorAll('.nav-link');
+        tabs.forEach(function (tab) {
+            tab.classList.remove('active');
+        });
+        // Show the content of the clicked tab
+        var activeTab = document.getElementById(region);
+        activeTab.style.display = 'block'; // Make the content visible
+
+        // Add 'active' class to the clicked tab
+        document.getElementById('tab-' + region).classList.add('active');
+    }
+
+    // Default tab to show when the page loads (set SE1 as default)
+    window.onload = function () {
+        showTab('se1'); // Show SE1 region content by default
+        document.getElementById('tab-se1').classList.add('active'); // Highlight SE1 tab as active
+    };
+    
+     </script>
+
+
+

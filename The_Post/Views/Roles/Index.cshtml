@@ -1,0 +1,142 @@
+﻿@model The_Post.Models.VM.RoleManagementVM
+
+@{
+    ViewData["Title"] = "Role Management";
+    Layout = "_LayoutForAdmin";
+}
+
+<div class="row mt-4">
+    <div class="col-md-8 col-lg-6">
+        <h2><strong><em>Role Management</em></strong></h2>
+        <p class="mb-3" style="border-bottom: 1px solid #A8A8A8;"></p>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<!-- Roles Management -->
+<div class="row my-3 py-4 ms-1">
+    <!-- Roles Table (Left Side) -->
+    <div class="col-xl-5 col-12  me-xl-5">
+        <h4>Existing Roles</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-8 col-md-4">Role Name</th>
+                    <th class="col-2 col-md-1 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model.Roles)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td class="text-center">
+                            <div class="d-flex flex-nowrap justify-content-center gap-1" style="white-space: nowrap;">
+                                <button type="button" class="btn btn-warning btn-sm" onclick="showEditForm('@role.Id', '@role.Name')">
+                                    <i class="fa-solid fa-edit"></i> Edit
+                                </button>
+                                <form asp-controller="Roles" asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Are you sure?');">
+                                    <input type="hidden" name="id" value="@role.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fa-solid fa-trash-can"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Edit Role Form (Right Side, Initially Hidden) -->
+    <div class="col-xl-4 col-12" id="editRoleFormContainer" style="display: none;">
+        <h4>Edit Role</h4>
+        <div class="card p-3 rounded-0">
+            <form asp-controller="Roles" asp-action="Edit" method="post">
+                <input type="hidden" id="editRoleId" name="Id" />
+                <div class="mb-3">
+                    <label for="editRoleName" class="form-label">Role Name</label>
+                    <input type="text" id="editRoleName" name="Name" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary" style="background: #0A2472;">Save Changes</button>
+                <button type="button" class="btn btn-secondary" onclick="hideEditForm()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row my-xl-5 ms-1 gy-3">
+    <!-- Assign Role Section -->
+    <div class="col-xl-4 col-12">
+        <div class="card p-3">
+            <h5>Assign Role</h5>
+            <form asp-action="AssignRole" method="post">
+                <div class="mb-3">
+                    <select name="UserId" class="form-select">
+                        <option selected disabled>Select Employee</option>
+                        @foreach (var user in Model.AssignRoleVM.Users)
+                        {
+                            <option value="@user.Id">@user.UserName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select name="Role" class="form-select">
+                        <option selected disabled>Select Role</option>
+                        @foreach (var role in Model.AssignRoleVM.Roles)
+                        {
+                            <option value="@role.Name">@role.Name</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-outline-success btn-sm"
+                        style="border-color: #0A2472; color: #0A2472;"
+                        onmouseover="this.style.backgroundColor='#0A2472'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#0A2472';">
+                    <i class="fa fa-square-check p-2"></i> Assign Role
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-xl-1"></div>
+
+    <!-- Create Role Section -->
+    <div class="col-xl-4 col-12 ms-xl-5">
+        <div class="card p-3">
+            <h5>Create Role</h5>
+            <form asp-action="Create" method="post">
+                <div class="mb-3">
+                    <input type="text" name="roleName" class="form-control" placeholder="Enter role name" required>
+                </div>
+                <button type="submit" class="btn btn-outline-primary btn-sm"
+                        style="border-color: #0A2472; color: #0A2472;"
+                        onmouseover="this.style.backgroundColor='#0A2472'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#0A2472';">
+                    <i class="fa fa-square-plus p-2"></i> Add Role
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showEditForm(id, name) {
+        document.getElementById('editRoleId').value = id;
+        document.getElementById('editRoleName').value = name;
+        document.getElementById('editRoleFormContainer').style.display = 'block';
+    }
+
+    function hideEditForm() {
+        document.getElementById('editRoleFormContainer').style.display = 'none';
+    }
+</script>

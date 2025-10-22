@@ -1,0 +1,26 @@
+﻿@model The_Post.Models.API.WeatherForecast
+<!--Partial view for a weather card -->
+<div class="card border-2 position-relative weather-card" data-city="@Model.City">
+    <div class="d-flex justify-content-center align-items-center fs-5 flex-fill">
+        @Model.City
+    </div>
+    <div class="d-flex justify-content-center align-items-center text-muted fs-6 flex-fill">
+        @Model.Summary
+    </div>
+    <div class="d-flex justify-content-center align-items-center fs-3 flex-fill">
+        @($"{Model.TemperatureC}°C")
+    </div>
+    <div class="d-flex align-items-center position-relative" style="height: 50px;">
+        <span class="position-absolute start-0 ps-2" style="font-size: 10px;">
+            <i class="fas fa-tint"></i> @Model.Humidity%
+        </span>
+
+        <div class="mx-auto">
+            <img src="@Model.Icon.Url" style="width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 4px rgba(70, 130, 180, 1));" />
+        </div>
+
+        <span class="position-absolute end-0 pe-2" style="font-size: 10px;">
+            <i class="fas fa-wind"></i> @Model.WindSpeed m/s
+        </span>
+    </div>
+</div>

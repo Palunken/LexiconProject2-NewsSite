@@ -1,0 +1,727 @@
+﻿/*Layout Styling */
+
+.footer {
+    line-height: normal !important;
+}
+
+.bottom-section {
+    /*  min-height: 40px;*/
+    height: 25px;
+    overflow: hidden;
+}
+.sidebar1-link {
+    font-weight: bold;
+    color:   #333333  !important;
+    text-decoration: none !important; /* Removes underline*/
+    transition: all 0.3s ease-in-out;
+    padding: 0px 20px 5px 20px;
+}
+
+ .sidebar1-link:hover {
+       
+    background-color: rgba(255, 255, 255, 0.3);
+    color: gray !important;
+    transition: background-color 0.3s ease-in-out;
+ }
+
+/* Custom styles for better responsive behavior */
+.header-container {
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0;
+    border-bottom: 2px solid #A8A8A8; /* Light Silver */
+}
+
+    .header-container::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+.brand-container {
+    position: absolute; 
+    left: 0; 
+    right: 0;       
+    top: 50%; 
+    transform: translateY(-50%); 
+    text-align: center;
+    width: 100%;
+    pointer-events: none; 
+    z-index: 1;
+}
+
+    .brand-container a.navbar-brand {
+        pointer-events: auto;
+        font-family: 'Merriweather', serif;
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 0 auto;
+        white-space: nowrap;
+        word-break: normal;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #0A2472; /* Navy Blue */
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        
+    }
+
+.side-controls {
+    position: relative;
+    z-index: 2;
+}
+
+.left-controls {
+    float: left;
+}
+
+.right-controls {
+    float: right;
+}
+
+/* Default */
+.responsive-search {
+    width: 300px;
+}
+.hide-button{}
+
+@media (min-width: 768px) {
+    .custom-border {
+        border-bottom: 1px solid #A8A8A8;
+    }
+}
+
+@media (max-width: 1200px) {
+    .responsive-search {
+        width: 250px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .responsive-search {
+        width: 200px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .responsive-search {
+        width: 150px;
+    }
+}
+
+/* Smaller logo */
+@media (max-width: 900px) {
+    .brand-container a.navbar-brand {
+        font-size: 3rem;
+        color: #0A2472; /* Navy Blue */
+    }    
+}
+
+@media (max-width: 810px) {
+    .responsive-search {
+        display: none;
+    }
+}
+
+@media (max-width: 450px) {
+    .side-controls{
+        display: none;
+    }
+    .hide-button{
+        display: none;
+    }
+}
+
+/*-----------------------------------------------------*/
+
+/*Menu button*/ 
+
+
+/* Default sidebar width */
+.offcanvas {
+   width: 20% !important; /* 30% width on larger screens */
+}
+
+
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* ---- Employees ---- */
+
+/* For Modals */
+.modal-header {
+    background-image: linear-gradient(#0A2472,white);
+}
+
+.modal-footer {
+    background-image: linear-gradient(white,#0A2472); /*#81baa0*/
+}
+
+/* For Cards */
+.list-group-item-custom {
+    background-color: rgba(10, 36, 114, 0.6); /* Same as #0A2472 but with lower opacity */
+    border-color: #0A2472;
+    color: black;
+}
+
+/* For viewports between 1400px and 1700px: 4 columns (each card takes 4/12 = 33.33% width) */
+@media (min-width: 1400px) and (max-width: 1700px) {
+    .col-xxl-custom {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+    }
+}
+
+/* For viewports 1700px and above: 3 columns (each card takes 3/12 = 25% width) */
+@media (min-width: 1700px) {
+    .col-xxl-custom {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+/* For Tabs */
+.custom-tabs .nav-link:not(.active) {
+    color: #233A80 !important;
+}
+
+
+/* --- For Homepage cards --- */
+.fpCard {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.fpCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Change the color of checked checkboxes */
+.form-check-input:checked {
+    background-color: #0A2472 !important;    
+}
+
+/* Change active pagination button color */
+.pagination .page-item.active .page-link {
+    background-color: #0A2472 !important;
+    color: white !important;
+}
+
+/* Change hover color for pagination links */
+.pagination .page-link:hover {
+    background-color: #0A2472 !important;
+    color: white !important;
+}
+
+/* Change pagination link colors */
+.pagination .page-link {
+    color: #0A2472 !important;
+    border: 1px solid #0A2472 !important;
+}
+
+/* Make sure disabled pagination buttons are styled properly */
+.pagination .page-item.disabled .page-link {
+    background-color: #E9ECEF;
+    color: #6C757D;
+    border-color: #DEE2E6;
+}
+
+/* ---- Sidebars ---- */
+
+@media (max-width: 991px) {
+    .sticky-top {
+        position: relative !important;
+        top: 0 !important;
+    }
+}
+
+.scrollable-sidebar-content {
+    max-height: calc(100vh - 14rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;    
+}
+    .scrollable-sidebar-content::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .scrollable-sidebar-content::-webkit-scrollbar-track {
+        background: #f8f9fa;
+    }
+
+    .scrollable-sidebar-content::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;      
+    }
+
+        .scrollable-sidebar-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
+
+
+
+.toast {
+    z-index: 1056;
+    opacity: 1 !important;
+    max-width: 400px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+ 
+
+
+.weather-card {
+    width: 150px; /* Fixed width for each card */
+    height: 150px; /* Fixed height for each card */
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* When cards are removable, cursor changes to pointer and the border turns red */
+.weather-card.removable {
+    cursor: pointer;
+    border: solid red;
+}
+
+/* Flex container for the cards with scroll functionality */
+.d-flex.flex-nowrap {
+    flex-wrap: nowrap; /* Prevent wrapping to the next row */
+    overflow-x: auto; /* Enable horizontal scrolling if necessary */
+    max-width: 100%; /* Ensure it doesn't exceed the container's width */
+}
+
+#weatherCardsContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Transparent scrollbar */
+    border-radius: 10px;
+}
+
+#weatherCardsContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.weather-button-text {
+    padding: 0;
+    cursor: pointer;
+}
+
+.modal-weather-color{
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+/* Archived */
+.archived-css {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+/* Admin Sidebar bg */
+.wave-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80%; /* Adjust this to control how high the wave reaches */
+    z-index: 0;
+    pointer-events: none; /* This ensures clicks go through to elements behind */
+}
+.sidebar_Admin a,
+.sidebar_Admin .nav-link,
+.sidebar_Admin ul,
+.sidebar_Admin li {
+    position: relative;
+    z-index: 2;
+}
+
+.article-image-height {
+    width: 100%; /* Full width of the container */
+    height: 400px; /* Fixed height for uniformity */
+    object-fit: cover; /* Crop excess instead of stretching */
+    object-position: center; /* Keep the middle of the image visible */
+    display: block; /* Avoid inline spacing issues */
+    border: 2px solid #A8A8A8;
+    border-radius: 15px;
+}
+
+
+
+/* Media query for mobile screens (600px or less width) */
+@media (max-width: 600px) {
+    .article-image-height {
+        max-height: 175px; /* The max-height gets changed to 175px */
+        border: 2px solid #A8A8A8; /* Light Silver */
+        border-radius: 15px; /* Adjust this value for more or less rounding */
+    }
+
+    .weather-button-text {
+        font-size: 4rem;
+        font-weight: bold;
+    }
+}
+
+.category-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    text-align: center;
+    padding: 10px 0px;
+    margin: 15px 0px;
+    /*position: sticky;*/
+    top: 0;
+    background: white;
+    z-index: 1000;
+    color: #0A2472; /* Navy Blue */
+    border-bottom: 3px solid #A8A8A8; /* Light Silver */
+}
+@media (min-width:825px) {
+    .headerAdmin {
+        width: calc(100% - 270px);
+        margin-left: 270px !important;
+        height: 82px !important;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
+        z-index: 1030 !important;        
+        border-bottom: 2px solid #A8A8A8; /* Light Silver */
+    }
+    
+    .sidebar_Admin {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 270px;
+    }
+    .div-main-admin {
+        margin-top: 82px !important;
+        margin-left: 270px !important;
+        padding-bottom: 70px !important;
+    }
+    .title_admin {
+        display: none !important;
+    }
+    .ofcButtonAdmin {
+        display: none !important;
+    }
+    .Mobile_Header-Admin {
+        display: none !important;
+    }
+    .footer_Admin {
+        height: 70px;
+        left: 270px;
+        width: calc(100% - 270px);        
+        background: radial-gradient(ellipse, rgba(10,36,114,0.6) 30%, rgba(10,36,114,0) 100%);        
+        background-size: 50% 5px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .offcanvasMobile{
+        display: none !important;
+    }
+}
+
+
+@media (max-width:824px) {
+    .headerAdmin {
+        width: 100% ;
+       
+        height: 60px;
+    }
+    .header_Items_Admin {
+        display: none !important;
+    }
+    .sidebar_Admin {
+        display: none !important;
+    }
+    .div-main-admin {
+        width: 100%;
+    }
+    .offcanvas {
+        width: 100% !important;
+    }
+    .footer_Admin {
+        width: 100% !important;
+    }    
+}
+
+.text-soft-white {
+    color: rgba(200, 200, 200, 0.8) !important;
+}
+.text-soft-red-wine {
+    color: rgba(128, 0, 32, 0.8) !important;
+}
+
+
+.bg-customGray {
+    background-color: #929aa1 !important;
+}
+.customBorderColor {
+    border-color: #0A2472 !important;
+}
+.customFont {
+    font-family: 'Merriweather', serif;    
+    color: #0A2472;
+}
+.custom-shadow {
+    box-shadow: 0 4px 6px -1px #0A2472, 0 2px 4px -2px #0A2472;
+}
+
+.table-responsive {
+    width: 50%;
+    max-width: 800px; /* Max width for larger screens */
+    margin: 0 auto;
+}
+
+table.prices-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: honeydew;
+    color: black;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+/*h2 {
+    text-align: center;
+    font-size: 40px;
+    color: #0A2472;
+    border: 1px solid #A8A8A8;
+}*/
+
+
+/* For the newsletter form so the labels become grey when the user isn't subcribed */
+.greyed-out {
+    color: gray !important;
+}
+
+/*---------------------------------------------------------------------------------------------*/
+                                          /*ManageNav*/
+/*---------------------------------------------------------------------------------------------*/
+  .refined-nav {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .refined-nav .nav-link {
+      color: #343a40;
+      padding: 12px 18px;
+      border-left: 4px solid transparent;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease-in-out;
+      font-size: 16px;
+      border-radius: 6px;
+      position: relative;
+  }
+
+  .refined-nav .nav-link i {
+      font-size: 18px;
+      transition: transform 0.3s ease-in-out;
+  }
+
+  .refined-nav .nav-link:hover {
+      background: linear-gradient(90deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+      border-left: 4px solid #0056b3;
+      color: #0056b3;
+  }
+
+  .refined-nav .nav-link:hover i {
+      transform: translateX(3px);
+  }
+
+  .refined-nav .nav-link.active {
+      border-left: 4px solid #0056b3;
+      color: #0056b3;
+      font-weight: bold;
+      background: linear-gradient(90deg, rgba(0, 123, 255, 0.2), rgba(0, 123, 255, 0.3));
+  }
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                      /*My Profile Pages*/
+/*---------------------------------------------------------------------------------------------*/
+
+
+.btn-custom-blue {
+    background-color: #0A2472; /* Primary blue color for button */
+    color: white; /* White text for good contrast */
+    border-radius: 8px; /* Rounded corners to match form fields */
+    padding: 12px; /* Adds extra padding for better touch/click experience */
+    font-weight: 600; /* Bold text for a strong call-to-action */
+    transition: all 0.3s ease-in-out; /* Smooth hover effect transition */
+}
+  
+  .btn-custom-blue:hover {
+      background-color: #004494; /* Slightly darker shade on hover */
+  }
+
+.form-title-Nav-Pages {
+    font-size: 34px; /* Keeps the prominent size */
+    font-weight: 800; /* Ensures bold appearance */
+    color: #0A2472; 
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Adds a soft glow for depth */
+    backdrop-filter: blur(10px); /* Creates a glassy effect */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    padding: 7px 20px; /* Adds space for the glassy effect */
+    border-radius: 10px; /* Smooth rounded edges */
+    letter-spacing: 1px; /* Maintains clean spacing */
+    margin-bottom: 7px; /* Keeps spacing below */
+}
+
+
+/* Style the form container */
+.form-container-Nav-Pages {
+    background: #f8f9fa; /* Light grey background to make the form stand out */
+    padding: 30px; /* Adds space inside the container for better readability */
+    border-radius: 10px; /* Rounds the corners for a softer look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+}
+
+/* Style input fields */
+.form-floating-Nav-Pages .form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+}
+
+/* Focus effect on input fields */
+    .form-floating-Nav-Pages .form-control:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
+    }
+
+/* Label styling */
+.form-floating-Nav-Pages label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Validation error styling */
+.text-danger-Nav-Pages {
+    font-size: 14px;
+}
+
+
+/* 🔹 Success checkmark styling */
+.input-group-text-Nav-Pages .text-success {
+    background: #d4edda; /* Light green background */
+    border: none;
+    color: #155724; /* Dark green for contrast */
+    font-weight: bold;
+    padding: 10px;
+}
+
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                          /*Email*/
+/*---------------------------------------------------------------------------------------------*/
+
+/* 🔹 Style the form container - Gives a professional card-like look */
+.email-form-container {
+    background: #f8f9fa; /* Light grey background to make the form stand out */
+    padding: 30px; /* Adds space inside the container for better readability */
+    border-radius: 10px; /* Rounds the corners for a softer look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+}
+
+/* 🔹 Style input fields - Makes the input boxes more attractive */
+.form-floating .form-control {
+    border-radius: 8px; /* Slightly rounded corners for a smoother look */
+    border: 1px solid #ced4da; /* Light grey border to blend with the design */
+}
+
+    /* 🔹 Focus effect on input fields - Highlights input when user clicks */
+    .form-floating .form-control:focus {
+        border-color: #0056b3; /* Changes border to a blue color when active */
+        box-shadow: 0 0 8px rgba(0, 86, 179, 0.3); /* Adds a glowing blue shadow effect */
+    }
+
+/* 🔹 Label styling - Improves readability of form labels */
+.form-floating label {
+    font-weight: 500; /* Makes text a bit bolder for clarity */
+    color: #495057; /* Dark grey color for better contrast */
+}
+
+/* 🔹 Validation error styling - Helps users see form errors clearly */
+.text-danger {
+    font-size: 14px; /* Makes error messages slightly smaller */
+}
+
+/* 🔹 Custom button styling - Makes the submit button look modern */
+.btn-custom-blue {
+    background-color: #0056b3; /* Primary blue color for button */
+    color: white; /* White text for good contrast */
+    border-radius: 8px; /* Rounded corners to match form fields */
+    padding: 12px; /* Adds extra padding for better touch/click experience */
+    font-weight: 600; /* Bold text for a strong call-to-action */
+    transition: all 0.3s ease-in-out; /* Smooth hover effect transition */
+}
+
+    /* 🔹 Button hover effect - Enhances interactivity */
+    .btn-custom-blue:hover {
+        background-color: #004494; /* Darker blue when hovered for a nice effect */
+    }
+
+/* 🔹 Success checkmark styling */
+.input-group-text.text-success {
+    background: #d4edda; /* Light green background */
+    border: none;
+    color: #155724; /* Dark green for contrast */
+    font-weight: bold;
+    padding: 10px;
+}
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                     /*Subscription*/
+/*---------------------------------------------------------------------------------------------*/
+
+.rounded-border-gray {
+    border: 2px solid #D3D3D3 !important;
+    border-radius: 8px; /* Adjust rounding as needed */
+}
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                     /*Newsletters*/
+/*---------------------------------------------------------------------------------------------*/
+
+.form-container-Newsletter {
+    background: #F8F9FA; /* Slightly darker grey for better contrast */
+    padding: 30px; /* Adds space inside the container for better readability */
+    border-radius: 10px; /* Rounds the corners for a softer look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Slightly darker shadow for better depth */
+}
+
+
